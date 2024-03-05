@@ -1,4 +1,4 @@
-import rotateReducer from "reducers/rotateReducer";
+import rotateReducer from "./reducers/rotateReducer";
 import { createStoreHook } from "react-redux";
 
 function configureStore(state = { rotating: true }) {
