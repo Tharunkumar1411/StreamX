@@ -1,8 +1,11 @@
-import rotateReducer from "./reducers/rotateReducer";
-import { createStoreHook } from "react-redux";
 
-function configureStore(state = { rotating: true }) {
-  return createStoreHook(rotateReducer,state);
-}
+import { configureStore } from '@reduxjs/toolkit';
+import homeReducer from './store/reducers/homeReducer';
 
-export default configureStore;
+const store = configureStore({
+  reducer:{
+     home: homeReducer,
+  },
+})
+
+export default store;
