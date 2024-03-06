@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -11,12 +10,10 @@ import { LinearProgress } from '@mui/material';
 
 export default function Recents(props) {
   const recentMovies = props?.data;
-  console.log("recentMovies", recentMovies)
   return (
-    <div className='flex flex-row gap-2 w-full' style={{ overflowX: 'auto' }}>
+    <div className='flex flex-row gap-2 overflow-x-auto'>
     {(recentMovies?.map((data, index) => (
-      <div style={{ width: 400, minWidth: 400, flexShrink: 0 }} key={index}>
-        {/* Adjust the width according to your card width */}
+      <div style={{ width: 400, flexShrink: 0 }} key={index}>
         <Card sx={{ display: 'flex', flexDirection: 'row', border: '1px solid white' }}>
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <CardContent sx={{ flex: '1 0 auto' }}>

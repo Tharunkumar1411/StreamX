@@ -4,6 +4,7 @@ import Layout from "../pages/Layout"
 import Home from "../pages/Home"
 import { useDispatch } from "react-redux"
 import { fetchMovieDetails } from "../store/actions/homeAction";
+import Player from "../pages/Player"
 
 export default function AppRoutes() {
     const dispatch = useDispatch()
@@ -16,6 +17,7 @@ export default function AppRoutes() {
             <Routes>
                 <Route path="/" element={<Layout />}>
                     <Route path="/home" element={<Home />} />
+                    <Route path="/player" element={<Player />} />
                 </Route>
             </Routes>
         </Suspense>
