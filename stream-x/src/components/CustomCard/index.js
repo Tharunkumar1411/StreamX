@@ -11,7 +11,8 @@ import { useNavigate } from "react-router-dom";
 export default function CustomCard(props) {
   const movieList = useSelector(state => state?.home?.movieList?.videos) ?? []
 
-  const navigate = useNavigate()
+  const isSearchDetails = props?.data?.selectedResults ?? movieList
+  const navigate = useNavigate();
 
   const handleClick = (playerData) => {
     navigate("/player", {state: {playerData}})
@@ -19,8 +20,8 @@ export default function CustomCard(props) {
   
   return (
     <div className='flex flex-row overflow-x-auto gap-2 cursor-pointer'>
-    {(movieList?.map((data,i) => (
-      <Card sx={{ maxWidth: 225, height: (props?.type === 'fav') ? 250 : 300, flexShrink: 0, display: 'flex', flexDirection: 'column', '&:hover': {
+    {(isSearchDetails?.map((data,i) => (
+      <Card sx={{ maxWidth: 225, height: (props?.type === 'fav') ? 150 : 300, flexShrink: 0, display: 'flex', flexDirection: 'column', '&:hover': {
         border: '1px solid #3256a8'
       }, border: '1px solid white'  }} key={i} onClick={() => handleClick(data)}>
         <CardMedia
@@ -29,7 +30,9 @@ export default function CustomCard(props) {
           sx={{ width: 361, height: 'fit-content' }}
           image={`https://storage.googleapis.com/gtv-videos-bucket/sample/${data?.thumb}`}
         />
-        <CardContent>
+        {props?.type !== 'fav' &&
+        <>
+         <CardContent>
           <Typography gutterBottom component="div">
             {data?.title}
           </Typography>
@@ -38,11 +41,11 @@ export default function CustomCard(props) {
           </Typography>
         </CardContent>
 
-        {props.type !== 'fav' &&
           <IconButton className='w-fit gap-2 rounded-md p-2'>
           <PlaylistAddIcon className='ml-2'/>
           <Typography>Add to favourites</Typography>
         </IconButton>
+        </>
         }
       </Card>
     )))}

@@ -17,16 +17,15 @@ export default function Categories(){
                     <h1 className="text-white mb-2 mt-4 font-bold">Recently viewed</h1>
                     <Recents header="tharun" subHeader="its hme jdklfs" data={recentMovies}/>
                 </div>
-               
                 <div>
-                    <h1 className="text-white mt-4 mb-2 font-bold">Popular shows </h1>
-                    <CustomCard type="poppular"/>
+                    <h1 className="text-white mt-4 mb-2 font-bold">Favourites </h1>
+                    <CustomCard type="fav"/>
                 </div>
 
                 <div>
-                    <h1 className="text-white mt-4 mb-2 font-bold">Your favourites </h1>
-                    <CustomCard type="fav"/>
-                </div>
+                    <h1 className="text-white mt-4 mb-2 font-bold">Popular shows </h1>
+                    <CustomCard type="poppular"/>
+                </div>             
                
             </div>
         </div>

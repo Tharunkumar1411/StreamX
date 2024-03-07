@@ -1,4 +1,4 @@
-import { getMovieDetails } from "../types/homeType";
+import { getMovieDetails, setSearchResults } from "../types/homeType";
 
 export function fetchMovieDetails() {
     return (dispatch) => {
@@ -18,5 +18,10 @@ export function fetchMovieDetails() {
             console.error('Error fetching data:', error);
         });
     }
-   
+}
+
+export function setSearchResult(data){
+    return(dispatch) => {
+        dispatch(setSearchResults(data))
+    }
 }

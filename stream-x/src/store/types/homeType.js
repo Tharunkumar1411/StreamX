@@ -4,3 +4,10 @@ export function getMovieDetails(data){
         payload: data
     }
 }
+
+export function setSearchResults(data){
+    return {
+        type: 'SET_SEARCH_RESULTS',
+        payload: data
+    }
+}
