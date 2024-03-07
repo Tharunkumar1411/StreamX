@@ -5,6 +5,8 @@ import TrailerComponent from "../../components/TrailerComponent"
 
 export default function Categories(){
     const movieList = useSelector(state => state?.home?.movieList?.videos) ?? []
+    const recentViewd = useSelector(state => state?.home?.movieList?.recentViewed?.[0])
+
     const recentMovies = (movieList)?.slice(0, 3);
     return(
         <div className="m-2"> 
@@ -13,10 +15,11 @@ export default function Categories(){
                     <TrailerComponent />
                 </div>
 
+                {recentViewd &&
                 <div>
                     <h1 className="text-white mb-2 mt-4 font-bold">Recently viewed</h1>
                     <Recents header="tharun" subHeader="its hme jdklfs" data={recentMovies}/>
-                </div>
+                </div>}
                 <div>
                     <h1 className="text-white mt-4 mb-2 font-bold">Favourites </h1>
                     <CustomCard type="fav"/>

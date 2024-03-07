@@ -1,4 +1,4 @@
-import { IconButton, useMediaQuery } from "@mui/material";
+import { Button, IconButton, useMediaQuery } from "@mui/material";
 import { useEffect, useRef, useState } from "react"
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
@@ -7,7 +7,7 @@ import VolumeMuteIcon from '@mui/icons-material/VolumeMute';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import { useDispatch, useSelector } from "react-redux";
-import { setPlayerDetails } from "../../store/actions/playerAction";
+import { setFavourites, setRecentView } from "../../store/actions/homeAction";
 
 export default function VideoPlayer(props) {
     const videoRef = useRef(null);
@@ -17,10 +17,11 @@ export default function VideoPlayer(props) {
     const [isPlaying, setIsPlaying] = useState(true);
     const [progress, setProgress] = useState(0);
     const [volume, setVolume] = useState(1);
+    const [isFav, setIsFav] = useState(false)
     const isMobile = useMediaQuery('(max-width:600px)');
     const dispatch = useDispatch();
     // const [useNativeControls, setUseNativeControls] = useState(true);
-    const playerdata = useSelector(state => state?.player) ?? []
+    const favourites = useSelector(state => state?.home?.movieList?.favourites) ?? []
 
     useEffect(() => {
         const handleResize = () => {
@@ -67,7 +68,12 @@ export default function VideoPlayer(props) {
             document.removeEventListener('fullscreenchange', handleFullScreenChange);
         };
     }, []);
-    
+
+    useEffect(() => {
+        setIsFav(favourites.some(item => (item.title === props?.data?.title)))
+    },[props])
+
+
 
     const stopVideo = () => {
         if(videoRef.current){
@@ -153,16 +159,14 @@ export default function VideoPlayer(props) {
         if(videoRef.current){
             const value = (videoRef.current.currentTime / videoRef.current.duration) * 100
             setProgress(value);
-            let obj = [{
+            let videoData = [{
                 ...props?.data,
                 time: videoRef.current.currentTime,
                 duration: videoRef.current.duration,
                 progress: value
             }]
 
-            dispatch(setPlayerDetails(obj))
-            localStorage.setItem("recentViewed", JSON.stringify(obj))
-            console.log("playerdata",  value)
+            dispatch(setRecentView(videoData))
         }
     }
 
@@ -201,7 +205,6 @@ export default function VideoPlayer(props) {
         <div style={{ }} className="w-full h-full">
             <video
                 className="w-full h-full"
-                autoPlay
                 ref={videoRef}
                 src={props?.data?.sources[0]}
                 poster={`https://storage.googleapis.com/gtv-videos-bucket/sample/${props?.data?.thumb}`}
@@ -213,13 +216,22 @@ export default function VideoPlayer(props) {
             { renderCustomControls()}
 
 
-            <div className={`flex flex-row gap-4 ${isMobile ? 'w-full' : 'w-3/2'} ml-4 mt-2`}>
-                    <div className="mt-4 flex flex-col gap-8 text-white">
-                        <h1 style={{ fontFamily: "Cantarell" }}><span className="font-extrabold">Title:</span> {props?.data?.title}</h1>
-                        <h1 style={{ fontFamily: "Cantarell" }}><span className="font-extrabold">SubTitle:</span> {props?.data?.subtitle}</h1>
-                        <h1 style={{ fontFamily: "Cantarell" }}><span className="font-extrabold">About:</span> {props?.data?.description}</h1>
-                    </div>
+            <div className={`flex flex-col gap-4 ${isMobile ? 'w-full' : 'w-3/2'} ml-4 mt-2`}>
+
+                {!isFav &&
+                <Button 
+                    onClick={() => dispatch(setFavourites(props?.data))}
+                    sx={{backgroundColor: "#222", width:"fit-content", color:"white", opacity: "0.8", fontWeight:"bold"}}
+                >
+                    Add To Fav
+                </Button> }
+
+                <div className="mt-4 flex flex-col gap-8 text-white">
+                    <h1 style={{ fontFamily: "Cantarell" }}><span className="font-extrabold">Title:</span> {props?.data?.title}</h1>
+                    <h1 style={{ fontFamily: "Cantarell" }}><span className="font-extrabold">SubTitle:</span> {props?.data?.subtitle}</h1>
+                    <h1 style={{ fontFamily: "Cantarell" }}><span className="font-extrabold">About:</span> {props?.data?.description}</h1>
                 </div>
+            </div>
         </div>
 
     )

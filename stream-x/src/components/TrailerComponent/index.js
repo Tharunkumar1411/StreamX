@@ -1,9 +1,20 @@
 
 import { Button, useMediaQuery } from '@mui/material'
+import { useNavigate } from 'react-router-dom';
 // import { useSelector } from 'react-redux'
 export default function TrailerComponent(){
     // const movieList = useSelector(state => state?.home?.movieList?.videos) ?? []
     const isMobile = useMediaQuery('(max-width:600px)');
+    const playerData = {
+        "description": "The first Blender Open Movie from 2006",
+        "sources": [
+            "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+        ],
+        "subtitle": "By Blender Foundation",
+        "thumb": "images/ElephantsDream.jpg",
+        "title": "Elephant Dream"
+    }
+    const navigate = useNavigate();
 
     return(
         <div style={{ position: "relative", width: "100%", height: "50%" }}>
@@ -19,7 +30,7 @@ export default function TrailerComponent(){
 
                     <h4 className={isMobile ? 'hidden' : 'block'}>By Blender Foundation</h4>
                     <p className={isMobile ? 'hidden' : 'block'}>The first Blender Open Movie from 2006</p>
-                    <Button sx={{backgroundColor: "#222", color:"white", opacity: "0.8", fontWeight:"bold"}}>Watch Now</Button>
+                    <Button sx={{backgroundColor: "#222", color:"white", opacity: "0.8", fontWeight:"bold"}} onClick={() => navigate('/player', {state: {playerData}})}>Watch Now</Button>
                 </div>
             </div>
         </div>

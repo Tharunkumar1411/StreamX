@@ -11,3 +11,18 @@ export function setSearchResults(data){
         payload: data
     }
 }
+
+export function setFavDetails(data){
+    return{
+        type: 'SET_FAV',
+        payload: data
+    }
+}
+
+
+export function setRecentViewed(data){
+    return{
+        type: 'SET_RECENT',
+        payload: data
+    }
+}
