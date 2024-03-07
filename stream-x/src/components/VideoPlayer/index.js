@@ -1,4 +1,4 @@
-import { IconButton } from "@mui/material";
+import { IconButton, useMediaQuery } from "@mui/material";
 import { useEffect, useRef, useState } from "react"
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
@@ -6,21 +6,25 @@ import StopIcon from '@mui/icons-material/Stop';
 import VolumeMuteIcon from '@mui/icons-material/VolumeMute';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
-import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
+import { useDispatch, useSelector } from "react-redux";
+import { setPlayerDetails } from "../../store/actions/playerAction";
 
 export default function VideoPlayer(props) {
     const videoRef = useRef(null);
     const intervalRef = useRef(null);
     const [isMuted, setIsMuted] = useState(false)
     const [isFullScreen, setIsFullScreen] = useState(false);
-    const [isPlaying, setIsPlaying] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(true);
     const [progress, setProgress] = useState(0);
     const [volume, setVolume] = useState(1);
-    const [useNativeControls, setUseNativeControls] = useState(window.innerHeight < 767);
+    const isMobile = useMediaQuery('(max-width:600px)');
+    const dispatch = useDispatch();
+    // const [useNativeControls, setUseNativeControls] = useState(true);
+    const playerdata = useSelector(state => state?.player) ?? []
 
     useEffect(() => {
         const handleResize = () => {
-            setUseNativeControls(window.innerWidth < 767);
+            // setUseNativeControls(window.innerWidth < 767);
         }
 
         window.addEventListener('resize', handleResize);
@@ -51,16 +55,19 @@ export default function VideoPlayer(props) {
         }
     },[]);
 
-
     useEffect(() => {
-        const handleFullScreenChange = () =>  setIsFullScreen(!!document.fullscreenElement);
-
+        const handleFullScreenChange = () => {
+            setIsFullScreen(!!document.fullscreenElement);
+            // setUseNativeControls(!!document.fullscreenElement || window.innerWidth < 767);
+        };
+    
         document.addEventListener('fullscreenchange', handleFullScreenChange);
-
+    
         return () => {
-            document.removeEventListener('fullscreenchange', handleFullScreenChange)
-        }
-    },[])
+            document.removeEventListener('fullscreenchange', handleFullScreenChange);
+        };
+    }, []);
+    
 
     const stopVideo = () => {
         if(videoRef.current){
@@ -101,61 +108,61 @@ export default function VideoPlayer(props) {
             } else if(videoRef.current.msRequestFullScree){
                 videoRef.current.msRequestFullScree();
             }
-        } else{
-            if(document.exitFullscreen){
-                document.exitFullscreen();
-            } else if(document.mozCancelFullscreen){
-                document.mozCancelFullscreen();
-            } else if(document.webkitExitFullscreen){
-                document.webkitExitFullscreen();
-            } else if(document.msExitFullscreen){
-                document.msExitFullscreen();
-            }
         }
         setIsFullScreen(!isFullScreen)
     }
-
     const handleVolumeChange = (event) => {
-        const newVolume = event.target.volume;
+        let newVolume = parseFloat(event.target.value);
+        newVolume = isNaN(newVolume) ? 1 : Math.max(0, Math.min(1, newVolume)); // Ensure volume is between 0 and 1
         videoRef.current.volume = newVolume;
         setVolume(newVolume);
-        setIsMuted(newVolume === 0)
+        setIsMuted(newVolume === 0);
     }
-
+    
 
     const renderCustomControls = () => {
         return(
-            <div>
-                <IconButton onClick={playPause}>
-                    {isPlaying ? <PlayArrowIcon /> : <PauseIcon />}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <IconButton onClick={playPause} sx={{ color: 'white' }}>
+                        {isPlaying ? <PlayArrowIcon /> : <PauseIcon />}
+                    </IconButton>
+            
+                    <IconButton onClick={stopVideo} sx={{ color: 'white' }}> 
+                        <StopIcon />
+                    </IconButton>
+            
+                    <input type="range" min="0" max="100" value={progress} onChange={handleSeek} className="w-24 "/>
+            
+                    <IconButton onClick={toggleMute} sx={{ color: 'white' }}>
+                        {isMuted ? <VolumeOffIcon /> : <VolumeMuteIcon />}
+                    </IconButton>
+            
+                    <input type="range" min="0" max="1" step="0.05" value={volume} onChange={handleVolumeChange} className="w-24"/>
+                </div>
+        
+                <IconButton onClick={toggleFullScreen} sx={{ color: 'white' }}>
+                    <FullscreenIcon />
                 </IconButton>
-
-                <IconButton onClick={stopVideo}> 
-                    <StopIcon />
-                </IconButton>
-
-                <input type="range" min="0" max="100" value={progress} onChange={handleSeek}/>
-
-                <IconButton onClick={toggleMute}>
-                    {isMuted ? <VolumeOffIcon /> : <VolumeMuteIcon />}
-                </IconButton>
-
-                <input type="range" min="0" max="1" step="0.05" value={volume} onChange={handleVolumeChange}/>
-
-
-                <IconButton onClick={toggleFullScreen}>
-                    {isFullScreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
-                </IconButton>
-
-            </div>
+        </div>
+        
         )
     }
 
     const updateProgress = () => {
         if(videoRef.current){
             const value = (videoRef.current.currentTime / videoRef.current.duration) * 100
-
             setProgress(value);
+            let obj = [{
+                ...props?.data,
+                time: videoRef.current.currentTime,
+                duration: videoRef.current.duration,
+                progress: value
+            }]
+
+            dispatch(setPlayerDetails(obj))
+            localStorage.setItem("recentViewed", JSON.stringify(obj))
+            console.log("playerdata",  value)
         }
     }
 
@@ -191,21 +198,29 @@ export default function VideoPlayer(props) {
     }
 
     return(
-        <div>
-           <video 
-            className="player"
-            style={{width: "640px"}}
-            ref={videoRef}
-            src={props?.data?.sources[0]}
-            poster={`https://storage.googleapis.com/gtv-videos-bucket/sample/${props?.data?.thumb}`}
-            onClick={playPause}
-            onPlay={startProgressLoop}
-            onPause={stopProgressLoop}
-            controls={useNativeControls}
-           />
+        <div style={{ }} className="w-full h-full">
+            <video
+                className="w-full h-full"
+                autoPlay
+                ref={videoRef}
+                src={props?.data?.sources[0]}
+                poster={`https://storage.googleapis.com/gtv-videos-bucket/sample/${props?.data?.thumb}`}
+                onClick={playPause}
+                onPlay={startProgressLoop}
+                onPause={stopProgressLoop}
+            />
 
-           {!useNativeControls && renderCustomControls()}
-           
+            { renderCustomControls()}
+
+
+            <div className={`flex flex-row gap-4 ${isMobile ? 'w-full' : 'w-3/2'} ml-4 mt-2`}>
+                    <div className="mt-4 flex flex-col gap-8 text-white">
+                        <h1 style={{ fontFamily: "Cantarell" }}><span className="font-extrabold">Title:</span> {props?.data?.title}</h1>
+                        <h1 style={{ fontFamily: "Cantarell" }}><span className="font-extrabold">SubTitle:</span> {props?.data?.subtitle}</h1>
+                        <h1 style={{ fontFamily: "Cantarell" }}><span className="font-extrabold">About:</span> {props?.data?.description}</h1>
+                    </div>
+                </div>
         </div>
+
     )
 }

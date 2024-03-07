@@ -9,26 +9,28 @@ export default function Layout() {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const handleClick = () => {
-        if(location.pathname !== '/home'){
+    const handleClick = (type) => {
+        if(location.pathname !== '/home' && type === 'streamX'){
             navigate('/home')
+        }
+
+        if(type === 'favourites'){
+            navigate('/favourites')
         }
     }
     return(
         <Box>
             <div className="flex flex-row text-white items-center justify-between m-2">
-                <div className="flex flex-row cursor-pointer" onClick={handleClick}>
+                <div className="flex flex-row cursor-pointer" onClick={() => handleClick('streamX')}>
                     <LiveTvIcon style={{color:"red"}}/> 
                     <h1 className="ml-2">StreamX</h1>
                 </div>
-                <div>
-                    <SearchBar />
-                </div>
-                <div>
-                    <IconButton>
-                        <PlaylistAddIcon sx={{color:"#73747E"}}/>
-                    </IconButton>
-                </div>
+
+                 <SearchBar />
+
+                <IconButton onClick={() => handleClick('favourites')}>
+                    <PlaylistAddIcon sx={{color:"#73747E"}}/>
+                </IconButton>
             </div>
             
             <Suspense>

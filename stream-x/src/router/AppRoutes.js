@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux"
 import { fetchMovieDetails } from "../store/actions/homeAction";
 import Player from "../pages/Player"
 import SearchResult from "../pages/SearchResult"
+import Favourites from "../pages/Favourites"
 
 export default function AppRoutes() {
     const dispatch = useDispatch()
@@ -20,6 +21,7 @@ export default function AppRoutes() {
                     <Route path="/home" element={<Home />} />
                     <Route path="/player" element={<Player />} />
                     <Route path="/searchResults" element={<SearchResult />} />
+                    <Route path="/favourites" element={<Favourites />} />
                 </Route>
             </Routes>
         </Suspense>
