@@ -24,6 +24,13 @@ export default function VideoPlayer(props) {
     const favourites = useSelector(state => state?.home?.movieList?.favourites) ?? []
 
     useEffect(() => {
+       if(props?.data?.type === 'recent'){
+            videoRef.current.currentTime = props?.data?.time
+            setProgress(props?.data?.progress)
+       }
+    }, [props])
+
+    useEffect(() => {
         const handleResize = () => {
             // setUseNativeControls(window.innerWidth < 767);
         }
@@ -163,7 +170,8 @@ export default function VideoPlayer(props) {
                 ...props?.data,
                 time: videoRef.current.currentTime,
                 duration: videoRef.current.duration,
-                progress: value
+                progress: value,
+                type: 'recent'
             }]
 
             dispatch(setRecentView(videoData))
@@ -226,7 +234,7 @@ export default function VideoPlayer(props) {
                     Add To Fav
                 </Button> }
 
-                <div className="mt-4 flex flex-col gap-8 text-white">
+                <div className="mt-4 flex flex-col gap-8 mb-2 text-white">
                     <h1 style={{ fontFamily: "Cantarell" }}><span className="font-extrabold">Title:</span> {props?.data?.title}</h1>
                     <h1 style={{ fontFamily: "Cantarell" }}><span className="font-extrabold">SubTitle:</span> {props?.data?.subtitle}</h1>
                     <h1 style={{ fontFamily: "Cantarell" }}><span className="font-extrabold">About:</span> {props?.data?.description}</h1>

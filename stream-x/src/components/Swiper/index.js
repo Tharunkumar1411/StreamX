@@ -10,10 +10,12 @@ import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 import './index.css';
 import { IconButton } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export default function SwiperCard(){
     const movieList = useSelector(state => state?.home?.movieList?.videos) ?? []
     const priorityMovies = (movieList)?.slice(0, 5);
+    const navigate = useNavigate();
     
     return(
         <div className="mt-10 static">
@@ -39,7 +41,7 @@ export default function SwiperCard(){
 
            <div className="flex justify-center items-center">
             {priorityMovies?.map((video, index) => (
-                    <SwiperSlide key={index} className="w-3/2" style={{ backgroundImage: `url('https://storage.googleapis.com/gtv-videos-bucket/sample/${video?.thumb}')` }}>
+                    <SwiperSlide key={index} className="w-3/2" style={{ backgroundImage: `url('https://storage.googleapis.com/gtv-videos-bucket/sample/${video?.thumb}')`}} onClick={() => navigate('/player', {state: {playerData: video}})}>
                         <div className="absolute bottom-8 left-0 right-0 flex flex-row justify-between bg-gray-800 m-2">
                             <div style={{ display: "flex", alignItems: "flex-end" }}>
                                 <h1 className="text-white font-semibold	">{video?.title}</h1>

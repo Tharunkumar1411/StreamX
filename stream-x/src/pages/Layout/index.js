@@ -10,8 +10,8 @@ export default function Layout() {
     const navigate = useNavigate();
 
     const handleClick = (type) => {
-        if(location.pathname !== '/home' && type === 'streamX'){
-            navigate('/home')
+        if(location.pathname !== '/streamX' && type === 'streamX'){
+            navigate('/streamX')
         }
 
         if(type === 'favourites'){

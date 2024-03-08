@@ -18,7 +18,7 @@ export default function TrailerComponent(){
 
     return(
         <div style={{ position: "relative", width: "100%", height: "50%" }}>
-            <video src={"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"} autoPlay loop muted style={{ width: "100%", height: "100%" }} />
+            <video src={"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"} autoPlay loop style={{ width: "100%", height: "100%" }} />
             <div style={{ position: "absolute", bottom: 0, left: 0, padding: "10px", color: "white", marginBottom: isMobile ? 0 : 80 }}>
                 <div className="flex flex-col gap-4">
                     <div className={`text-center ${isMobile ? 'hidden' : 'block'}`}>

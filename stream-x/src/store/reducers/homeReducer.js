@@ -14,9 +14,13 @@ const moviewReducer = (state = initialState, action) => {
       return {...state, searchResults: action.payload}
     case "SET_FAV": 
       return {...state, favourites: [...state.favourites, action.payload]}
+    case "REMOVE_FAV": 
+      return {
+        ...state,
+        favourites: state.favourites.filter(item => item !== action.payload)
+      };
     case 'SET_RECENT': 
       return {...state, recentViewed: action.payload}
-
     default:
       return state
   }

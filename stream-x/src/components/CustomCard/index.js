@@ -11,18 +11,25 @@ import { setFavourites } from '../../store/actions/homeAction';
 export default function CustomCard(props) {
   const movieList = useSelector(state => state?.home?.movieList?.videos) ?? []
   const favourites = useSelector(state => state?.home?.movieList?.favourites) ?? []
+  const [mapData, setMapData] = React.useState([]);
 
-
-  const isSearchDetails = props?.data?.selectedResults ?? movieList
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  console.log("movieList", movieList)
   const handleClick = (playerData) => {
     navigate("/player", {state: {playerData}})
   }
 
+  React.useEffect(() => {
+    if(props?.data?.selectedResults){
+      setMapData(props?.data?.selectedResults)
+    }else if(props?.type === 'fav'){
+      setMapData(favourites);
+    }else{
+      setMapData(movieList);
+    }
+  },[props])
+
   const isFavourites = (data) => {
-    console.log("chekcing::", data)
     return favourites.some(item => (item.title === data?.title))
   }
   React.useEffect(() => {
@@ -31,10 +38,11 @@ export default function CustomCard(props) {
   
   return (
     <div className='flex flex-row overflow-x-auto gap-2 cursor-pointer'>
-    {(isSearchDetails?.map((data,i) => (
-      <Card sx={{ maxWidth: 225, height: (props?.type === 'fav') ? 150 : 320, flexShrink: 0, display: 'flex', flexDirection: 'column', '&:hover': {
+    {(mapData?.map((data,i) => (
+      <Card 
+      sx={{ maxWidth: 225, height: (props?.type === 'fav') ? 150 : 320, flexShrink: 0, display: 'flex', flexDirection: 'column', '&:hover': {
         border: '1px solid #3256a8'
-      }, border: '1px solid white'  }} key={i} >
+      }, border: '1px solid white', }} key={i} >
         <CardMedia
           component="img"
           alt="green iguana"
@@ -46,7 +54,7 @@ export default function CustomCard(props) {
         <>
 
           <Button 
-              onClick={() => dispatch(setFavourites(data))}
+              onClick={() => !isFavourites(data) ? dispatch(setFavourites(data)) : navigate('/favourites')}
               sx={{
                   backgroundColor: "#222",
                   width: "fit-content",
@@ -60,7 +68,7 @@ export default function CustomCard(props) {
                   }
               }}
           >
-              {!isFavourites(data) ? `Add To Fav` : `Check in Fav`}
+              {!isFavourites(data) ? `Add To Fav` : `In Fav`}
           </Button>
 
          <CardContent >

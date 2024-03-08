@@ -11,6 +11,7 @@ export default function SearchResult() {
     const isMobile = useMediaQuery('(max-width:600px)');
     const searchResults = useSelector(state => state?.home?.movieList?.searchResults) ?? location?.state?.selectedResult
 
+    console.log("location", searchResults)
     useEffect(() => {
         if(searchResults){
             setSearchData({...searchData, selectedResults: [searchResults]})

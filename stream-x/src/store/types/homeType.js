@@ -19,6 +19,13 @@ export function setFavDetails(data){
     }
 }
 
+export function removeFavDetails(data){
+    return{
+        type: 'REMOVE_FAV',
+        payload: data
+    }
+}
+
 
 export function setRecentViewed(data){
     return{
