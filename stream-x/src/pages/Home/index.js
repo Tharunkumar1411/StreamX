@@ -9,11 +9,8 @@ export default function Home(){
     return(
         <>
         <div className="relative h-screen">
-        {/* Background Image with Black Overlay */}
             <div className="absolute inset-0 bg-cover bg-center bg-black opacity-20" style={{ backgroundImage: `url(${BgImage})` }}/>
-    
-            {/* Content */}
-            <div className="flex flex-row cursor-pointer mt-4 ml-4" onClick={() => handleClick('streamX')}>
+                <div className="flex flex-row cursor-pointer mt-4 ml-4" onClick={() => handleClick('streamX')}>
                 <h1 className="text-primary text-4xl">StreamX</h1>
             </div>
             <div className="absolute inset-0 flex items-center justify-center">

@@ -1,9 +1,9 @@
 
-import { Button, useMediaQuery } from '@mui/material'
+import { useMediaQuery } from '@mui/material'
 import { useNavigate } from 'react-router-dom';
-// import { useSelector } from 'react-redux'
+import CustomButton from '../CustomButton';
+
 export default function TrailerComponent(){
-    // const movieList = useSelector(state => state?.home?.movieList?.videos) ?? []
     const isMobile = useMediaQuery('(max-width:600px)');
     const playerData = {
         "description": "The first Blender Open Movie from 2006",
@@ -22,15 +22,15 @@ export default function TrailerComponent(){
             <div style={{ position: "absolute", bottom: 0, left: 0, padding: "10px", color: "white", marginBottom: isMobile ? 0 : 80 }}>
                 <div className="flex flex-col gap-4">
                     <div className={`text-center ${isMobile ? 'hidden' : 'block'}`}>
-                        <h1 className='text-4xl'>
+                        <h1 className='text-4xl font-serif'>
                             StreamX <span style={{ color: "goldenrod" }}>Specials</span>
                         </h1>
-                        <h2 className='text-6xl'>Elephant Dream</h2>
+                        <h2 className='text-6xl font-serif'>Elephant Dream</h2>
                     </div>
 
                     <h4 className={isMobile ? 'hidden' : 'block'}>By Blender Foundation</h4>
                     <p className={isMobile ? 'hidden' : 'block'}>The first Blender Open Movie from 2006</p>
-                    <Button sx={{backgroundColor: "#222", color:"white", opacity: "0.8", fontWeight:"bold"}} onClick={() => navigate('/player', {state: {playerData}})}>Watch Now</Button>
+                    <CustomButton name="Watch Now" func={() => navigate('/player', {state: {playerData}})}/>
                 </div>
             </div>
         </div>

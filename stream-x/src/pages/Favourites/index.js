@@ -67,8 +67,8 @@ export default function Favorites() {
             <ConfirmDeletePopup ref={deleteRef} from="fav"/>
         </>) : 
             <div className="flex justify-center items-center mt-40">
-                <div className="text-white" style={{color: "white"}}>
-                    No Favourites Found
+                <div className="text-white font-bold">
+                    Nothing Marked as Favourites
                 </div>
             </div>
         }   

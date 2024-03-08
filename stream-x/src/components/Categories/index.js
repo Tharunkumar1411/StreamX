@@ -2,15 +2,19 @@ import CustomCard from "../CustomCard";
 import Recents from "./Recents";
 import {useSelector} from "react-redux"
 import TrailerComponent from "../../components/TrailerComponent"
-import TrendingCard from "../TrendingCard.js";
+import Loader from "../../components/Loader/index.js";
+import TopMovieCard from "../TopMovieCard/index.js";
 
 export default function Categories(){
     const movieList = useSelector(state => state?.home?.movieList?.videos) ?? []
     const recentViewd = useSelector(state => state?.home?.movieList?.recentViewed?.[0])
     const favourites = useSelector(state => state?.home?.movieList?.favourites?.[0])
-
+    const isLoading = useSelector(state => state?.home?.movieList?.videos)
+    console.log("fdsfjdsf::", isLoading)
     const recentMovies = (movieList)?.slice(0, 3);
     return(
+        <>
+        {!isLoading?.length ? <Loader from="categories"/> :
         <div className="m-2"> 
             <div>
                 <div>
@@ -33,7 +37,7 @@ export default function Categories(){
 
                 <div>
                     <h1 className="text-white mt-4 mb-2 font-bold">Top Movies </h1>
-                    <TrendingCard type="trending"/>
+                    <TopMovieCard type="trending"/>
                 </div>
 
                 <div>
@@ -42,6 +46,8 @@ export default function Categories(){
                 </div>             
                
             </div>
-        </div>
+        </div>}
+        </>
+
     )
 }

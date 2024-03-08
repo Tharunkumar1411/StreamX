@@ -1,14 +1,14 @@
-import { Button, IconButton, useMediaQuery } from "@mui/material";
+import { IconButton, useMediaQuery } from "@mui/material";
 import { useEffect, useRef, useState } from "react"
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import StopIcon from '@mui/icons-material/Stop';
-import VolumeMuteIcon from '@mui/icons-material/VolumeMute';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import { useDispatch, useSelector } from "react-redux";
 import { setFavourites, setRecentView } from "../../store/actions/homeAction";
-
+import CustomButton from "../CustomButton";
+import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 export default function VideoPlayer(props) {
     const videoRef = useRef(null);
     const intervalRef = useRef(null);
@@ -148,7 +148,7 @@ export default function VideoPlayer(props) {
                     <input type="range" min="0" max="100" value={progress} onChange={handleSeek} className="w-24 "/>
             
                     <IconButton onClick={toggleMute} sx={{ color: 'white' }}>
-                        {isMuted ? <VolumeOffIcon /> : <VolumeMuteIcon />}
+                        {isMuted ? <VolumeOffIcon /> : <VolumeUpIcon />}
                     </IconButton>
             
                     <input type="range" min="0" max="1" step="0.05" value={volume} onChange={handleVolumeChange} className="w-24"/>
@@ -225,14 +225,16 @@ export default function VideoPlayer(props) {
 
 
             <div className={`flex flex-col gap-4 ${isMobile ? 'w-full' : 'w-3/2'} ml-4 mt-2`}>
-
                 {!isFav &&
-                <Button 
-                    onClick={() => dispatch(setFavourites(props?.data))}
-                    sx={{backgroundColor: "#222", width:"fit-content", color:"white", opacity: "0.8", fontWeight:"bold"}}
-                >
-                    Add To Fav
-                </Button> }
+                    <CustomButton 
+                        extraStyle={{backgroundColor: "#222", width:"fit-content", color:"white", opacity: "0.8", fontWeight:"bold"}}
+                        name="Add To Fav"
+                        func={() => {
+                            setIsFav(true)
+                            dispatch(setFavourites(props?.data))
+                        }}
+                    />
+                }
 
                 <div className="mt-4 flex flex-col gap-8 mb-2 text-white">
                     <h1 style={{ fontFamily: "Cantarell" }}><span className="font-extrabold">Title:</span> {props?.data?.title}</h1>

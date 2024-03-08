@@ -2,7 +2,8 @@ import { combineReducers } from "@reduxjs/toolkit"
 
 const initialState = {
   favourites: [],
-  recentViewed: []
+  recentViewed: [],
+  loading: true,
 }
 
 const moviewReducer = (state = initialState, action) => {
