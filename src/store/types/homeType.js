@@ -19,6 +19,13 @@ export function setFavDetails(data){
     }
 }
 
+export function updateFavDetails(data){
+    return{
+        type: 'UPDATE_FAV',
+        payload: data
+    }
+}
+
 export function removeFavDetails(data){
     return{
         type: 'REMOVE_FAV',
