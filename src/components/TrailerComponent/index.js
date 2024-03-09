@@ -21,7 +21,7 @@ export default function TrailerComponent(){
 
     useEffect(() => {
         if (videoRef.current) {
-            // Set starting current time to 30 seconds (for example)
+            // set current time 10 seconds
             videoRef.current.currentTime = 10;
         }
     }, []);
