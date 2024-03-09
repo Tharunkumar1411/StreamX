@@ -54,49 +54,60 @@ export default function Favorites() {
     }
 
     return (
-        <DragDropContext onDragEnd={handleDragEnd}>
-            <Droppable droppableId="favourites">
-                {(provided) => (
-                    <CardContainer className="m-4" {...provided.droppableProps} ref={provided.innerRef}>
-                        {favourites.map((data, index) => (
-                            <Draggable key={index} draggableId={data.title?.toString()} index={index}>
-                                {(provided) => (
-                                    <Card
-                                        sx={{ maxWidth: 305, border:"1px solid white", marginLeft:"auto", marginRight:"auto" }}
-                                        ref={provided.innerRef}
-                                        {...provided.draggableProps}
-                                        {...provided.dragHandleProps}
-                                    >
-                                        <CardHeader
-                                            avatar={
-                                                <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                                                    {data?.title[0]}
-                                                </Avatar>
-                                            }
-                                            action={ 
-                                                <IconButton aria-label="add to favorites" onClick={()  => handleRemoveFav(data)}>
-                                                    <RemoveFav />
-                                                </IconButton>
-                                            }
-                                            title={data?.title}
-                                            subheader={data?.subtitle}
-                                        />
-                                        <CardMedia
-                                            component="img"
-                                            height="194"
-                                            image={`https://storage.googleapis.com/gtv-videos-bucket/sample/${data?.thumb}`}
-                                            alt="Paella dish"
-                                            onClick={() => handleClick(data)}
-                                        />
-                                    </Card>
-                                )}
-                            </Draggable>
-                        ))}
-                        {provided.placeholder}
-                    </CardContainer>
-                )}
-            </Droppable>
-            <ConfirmDeletePopup ref={deleteRef} from="fav"/>
-        </DragDropContext>
+        <>
+            {(favourites?.length) ? 
+            
+                <DragDropContext onDragEnd={handleDragEnd}>
+                    <Droppable droppableId="favourites">
+                        {(provided) => (
+                            <CardContainer className="m-4" {...provided.droppableProps} ref={provided.innerRef}>
+                                {favourites.map((data, index) => (
+                                    <Draggable key={index} draggableId={data.title?.toString()} index={index}>
+                                        {(provided) => (
+                                            <Card
+                                                sx={{ maxWidth: 305, border:"1px solid white", marginLeft:"auto", marginRight:"auto" }}
+                                                ref={provided.innerRef}
+                                                {...provided.draggableProps}
+                                                {...provided.dragHandleProps}
+                                            >
+                                                <CardHeader
+                                                    avatar={
+                                                        <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                                                            {data?.title[0]}
+                                                        </Avatar>
+                                                    }
+                                                    action={ 
+                                                        <IconButton aria-label="add to favorites" onClick={()  => handleRemoveFav(data)}>
+                                                            <RemoveFav />
+                                                        </IconButton>
+                                                    }
+                                                    title={data?.title}
+                                                    subheader={data?.subtitle}
+                                                />
+                                                <CardMedia
+                                                    component="img"
+                                                    height="194"
+                                                    image={`https://storage.googleapis.com/gtv-videos-bucket/sample/${data?.thumb}`}
+                                                    alt="Paella dish"
+                                                    onClick={() => handleClick(data)}
+                                                />
+                                            </Card>
+                                        )}
+                                    </Draggable>
+                                ))}
+                                {provided.placeholder}
+                            </CardContainer>
+                        )}
+                    </Droppable>
+                    <ConfirmDeletePopup ref={deleteRef} from="fav"/>
+                </DragDropContext> 
+            :  
+                <div className="flex justify-center items-center mt-40">
+                    <div className="text-white font-bold">
+                        Nothing Marked as Favourites
+                    </div>
+                </div>
+            }
+        </>
     );
 }
