@@ -3,6 +3,7 @@ import { combineReducers } from "@reduxjs/toolkit"
 const initialState = {
   favourites: [],
   recentViewed: [],
+  searchFavResult: null,
   loading: true,
 }
 
@@ -14,6 +15,8 @@ const moviewReducer = (state = initialState, action) => {
       return {...state, searchResults: action.payload}
     case "SET_FAV": 
       return {...state, favourites: [...state.favourites, action.payload]}
+    case "SEARCH_FAV": 
+      return {...state, searchFavResult: action.payload}
     case "UPDATE_FAV": 
       return {...state, favourites: action.payload}
     case "REMOVE_FAV": 

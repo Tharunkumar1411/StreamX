@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { setSearchResult } from "../../store/actions/homeAction";
+import { searchFavourites, setSearchResult } from "../../store/actions/homeAction";
 
 export default function SearchBar() {
-  const movieList = useSelector(state => state?.home?.movieList?.videos) ?? []
+  const movieList = useSelector(state => state?.home?.movieList?.videos) ?? [];
+  const favourites = useSelector(state => state?.home?.movieList?.favourites) ?? [];
+
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedResult, setSelectedResult] = useState(null);
   const [searchedResults, setSearchedResults] = useState([]);
@@ -30,8 +32,17 @@ export default function SearchBar() {
   const handleChange = (event) => {
     const value = event.target.value;
     setSearchTerm(value);
-    setShowResults(value !== '');
-    debouncedSearch(value);
+    if(location.pathname === "/favourites"){
+      if(value !== ''){
+        let filterFav = favourites.filter((data) => data.title?.toLowerCase().includes(value?.toLowerCase()));
+        dispatch(searchFavourites(filterFav));
+      }else{
+        dispatch(searchFavourites(null));
+      }
+    }else{
+      setShowResults(value !== '');
+      debouncedSearch(value);
+    }
   };
 
   const debouncedSearch = debounce((value) => {
@@ -48,6 +59,12 @@ export default function SearchBar() {
     setShowResults(false);
     setSelectedResult(data);
   }
+
+  useEffect(() => {
+    if(location.pathname !== "/searchResults" || location.pathname !== "/favorites" ){
+      setShowResults(false);
+    }
+  },[])
 
   const handleIconClick = () => {
     dispatch(setSearchResult(selectedResult))

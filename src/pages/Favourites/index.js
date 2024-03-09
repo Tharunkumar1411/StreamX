@@ -30,7 +30,7 @@ export default function Favorites() {
     const handleClick = (playerData) => {
         navigate("/player", {state: {playerData}})
     }
-    const favourites = useSelector(state => state?.home?.movieList?.favourites) ?? [];
+    const favourites = useSelector(state => state?.home?.movieList?.searchFavResult ?? state?.home?.movieList?.favourites);
 
     const handleRemoveFav = (data) => {
         deleteRef?.current?.openDialog?.(data);

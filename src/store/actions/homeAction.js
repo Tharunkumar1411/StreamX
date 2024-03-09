@@ -1,4 +1,4 @@
-import { getMovieDetails, removeFavDetails, setFavDetails, setRecentViewed, setSearchResults, updateFavDetails } from "../types/homeType";
+import { getMovieDetails, removeFavDetails, searchFavDetails, setFavDetails, setRecentViewed, setSearchResults, updateFavDetails } from "../types/homeType";
 
 export function fetchMovieDetails() {
     return (dispatch) => {
@@ -36,6 +36,12 @@ export function setRecentView(data){
 export function setFavourites(data){
     return(dispatch) => {
         dispatch(setFavDetails(data))
+    }
+}
+
+export function searchFavourites(data){
+    return(dispatch) => {
+        dispatch(searchFavDetails(data))
     }
 }
 
