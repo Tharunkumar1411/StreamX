@@ -10,7 +10,9 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import RemoveFav from '@mui/icons-material/DoNotDisturbOnOutlined';
 import ConfirmDeletePopup from '../../components/ConfirmDeletePopup';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
+import { useDispatch } from 'react-redux';
+import { updateFavourites } from '../../store/actions/homeAction';
 
 const CardContainer = styled('div')({
   display: 'grid',
@@ -23,46 +25,61 @@ const CardContainer = styled('div')({
 
 export default function Favorites() {
     const navigate = useNavigate();
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
     const deleteRef = React.useRef();
+    const [favData, setFavData] = React.useState([]);
     const handleClick = (playerData) => {
         navigate("/player", {state: {playerData}})
     }
-    const favourites = useSelector(state => state?.home?.movieList?.favourites) ?? []
+    const favourites = useSelector(state => state?.home?.movieList?.favourites) ?? [];
+
+   React.useEffect(() => {
+    if(favourites.length){
+        setFavData(favourites);
+    }
+    console.log("checking data::", favourites)
+   },[favourites])
 
     const handleRemoveFav = (data) => {
         deleteRef?.current?.openDialog?.(data);
     }
 
-    const swapIndexObjects = (data, current, desination) => {
-        [data[current], data[desination]] = [data[desination], data[current]];
-
-        return data;
+    const swapIndexObjects = async(data, current, destination) => {
+        // Create a new array with the elements from the original array
+        const newData = [...data];
+    
+        // Swap elements in the new array
+        [newData[current], newData[destination]] = [newData[destination], newData[current]];
+    
+        return newData;
     }
-
+    
     const handleDragEnd = async(result) => {
         if (!result.destination) return;
         console.log("chekcing resut::", result);
         let destinationIndex = result?.destination?.index;
         let currentIndex = result?.source?.index;
-        const resultObj = await swapIndexObjects(favourites, currentIndex, destinationIndex)
-
+        const fav = favourites
+        const resultObj = await swapIndexObjects(fav, currentIndex, destinationIndex)
         console.log("result object:", resultObj);
-        // dispatch(updateFavourites(resultObj))
+        dispatch(updateFavourites(resultObj))
+        setFavData(resultObj)
+
         // Reorder the list in Redux state
         // Dispatch action to update the order in Redux state
     }
 
     return (
         <>
-            {(favourites?.length) ? 
+            <h1 className="text-white ml-9 mt-4 mb-2 font-bold">Favourites </h1>
+            {(favData?.length) ? 
             
                 <DragDropContext onDragEnd={handleDragEnd}>
                     <Droppable droppableId="favourites">
                         {(provided) => (
                             <CardContainer className="m-4" {...provided.droppableProps} ref={provided.innerRef}>
-                                {favourites.map((data, index) => (
-                                    <Draggable key={index} draggableId={data.title?.toString()} index={index}>
+                                {favData.map((data, index) => (
+                                    <Draggable key={index} draggableId={`draggable-${index}`} index={index}>
                                         {(provided) => (
                                             <Card
                                                 sx={{ maxWidth: 305, border:"1px solid white", marginLeft:"auto", marginRight:"auto" }}

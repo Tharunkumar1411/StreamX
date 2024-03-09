@@ -6,12 +6,10 @@ import Loader from "../../components/Loader/index.js";
 import TopMovieCard from "../TopMovieCard/index.js";
 
 export default function Categories(){
-    const movieList = useSelector(state => state?.home?.movieList?.videos) ?? []
     const recentViewd = useSelector(state => state?.home?.movieList?.recentViewed?.[0])
-    const favourites = useSelector(state => state?.home?.movieList?.favourites?.[0])
-    const isLoading = useSelector(state => state?.home?.movieList?.videos)
-    console.log("fdsfjdsf::", isLoading)
-    const recentMovies = (movieList)?.slice(0, 3);
+    const favourites = useSelector(state => state?.home?.movieList?.favourites);
+    const isLoading = useSelector(state => state?.home?.movieList?.videos);
+
     return(
         <>
         {!isLoading?.length ? <Loader from="categories"/> :
@@ -24,11 +22,11 @@ export default function Categories(){
                 {recentViewd &&
                     <div>
                         <h1 className="text-white mb-2 mt-4 font-bold">Recently viewed</h1>
-                        <Recents header="tharun" subHeader="its hme jdklfs" data={recentMovies}/>
+                        <Recents />
                     </div>
                 }
 
-                {favourites &&
+                {favourites.length &&
                     <div>
                         <h1 className="text-white mt-4 mb-2 font-bold">Favourites </h1>
                         <CustomCard type="fav"/>

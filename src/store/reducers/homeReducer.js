@@ -17,7 +17,7 @@ const moviewReducer = (state = initialState, action) => {
     case "SET_FAV": 
       return {...state, favourites: [...state.favourites, action.payload]}
     case "UPDATE_FAV": 
-      return {...state, updatedFav: [...state.updatedFav, action.payload]}
+      return {...state, favourites:  action.payload}
     case "REMOVE_FAV": 
       return {
         ...state,
