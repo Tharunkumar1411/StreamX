@@ -46,7 +46,6 @@ export function updateFavourites(data){
 }
 
 export function removeFavourites(data){
-    console.log("in action", data)
     return(dispatch) => {
         dispatch(removeFavDetails(data))
     }

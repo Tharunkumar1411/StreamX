@@ -24,7 +24,6 @@ export default forwardRef(function ConfirmDeletePopup(props, ref) {
   const openDialog = (user) => {
     setUserToDelete(user);
     setOpen(true);
-    console.log("checking in dialog::", user, userToDelete);
   };
 
   useImperativeHandle(ref, () => ({

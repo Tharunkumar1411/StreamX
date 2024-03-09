@@ -27,17 +27,10 @@ export default function Favorites() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const deleteRef = React.useRef();
-    const [favData, setFavData] = React.useState([]);
     const handleClick = (playerData) => {
         navigate("/player", {state: {playerData}})
     }
     const favourites = useSelector(state => state?.home?.movieList?.favourites) ?? [];
-
-   React.useEffect(() => {
-    if(favourites.length){
-        setFavData(favourites);
-    }
-   },[favourites])
 
     const handleRemoveFav = (data) => {
         deleteRef?.current?.openDialog?.(data);
@@ -59,19 +52,19 @@ export default function Favorites() {
         const fav = favourites
         const resultObj = await swapIndexObjects(fav, currentIndex, destinationIndex)
         dispatch(updateFavourites(resultObj))
-        setFavData(resultObj)
     }
 
     return (
         <>
-            <h1 className="text-white ml-9 mt-4 mb-2 font-bold">Favourites </h1>
-            {(favData?.length) ? 
-            
+            {(favourites?.length) ? 
+            <>
+                <h1 className="text-white ml-9 mt-4 mb-2 font-bold">Favourites </h1>
                 <DragDropContext onDragEnd={handleDragEnd}>
+                    
                     <Droppable droppableId="favourites">
                         {(provided) => (
                             <CardContainer className="m-4" {...provided.droppableProps} ref={provided.innerRef}>
-                                {favData.map((data, index) => (
+                                {favourites.map((data, index) => (
                                     <Draggable key={index} draggableId={`draggable-${index}`} index={index}>
                                         {(provided) => (
                                             <Card
@@ -110,7 +103,7 @@ export default function Favorites() {
                         )}
                     </Droppable>
                     <ConfirmDeletePopup ref={deleteRef} from="fav"/>
-                </DragDropContext> 
+                </DragDropContext> </>
             :  
                 <div className="flex justify-center items-center mt-40">
                     <div className="text-white font-bold">
