@@ -40,7 +40,7 @@ export default function Categories(){
                     <TopMovieCard type="trending"/>
                 </div>
 
-                <div>
+                <div className="mb-10">
                     <h1 className="text-white mt-4 mb-2 font-bold">Popular shows </h1>
                     <CustomCard type="poppular"/>
                 </div>             
