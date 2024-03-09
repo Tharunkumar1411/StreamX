@@ -17,9 +17,9 @@ export default function TrailerComponent(){
     const navigate = useNavigate();
 
     return(
-        <div style={{ position: "relative", width: "100%", height: "50%" }}>
+        <div className="relative w-full h-1/2">
             <video src={"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"} autoPlay loop style={{ width: "100%", height: "100%" }} />
-            <div style={{ position: "absolute", bottom: 0, left: 0, padding: "10px", color: "white", marginBottom: isMobile ? 0 : 80 }}>
+            <div className={`absolute bottom-0 left-0 p-2 text-white ${isMobile ? 'mb-0' : 'mb-10'}`}>
                 <div className="flex flex-col gap-4">
                     <div className={`text-center ${isMobile ? 'hidden' : 'block'}`}>
                         <h1 className='text-4xl font-serif'>
@@ -34,6 +34,5 @@ export default function TrailerComponent(){
                 </div>
             </div>
         </div>
-
     )
 }

@@ -61,7 +61,7 @@ export default function SearchBar() {
     <div style={{ position: 'relative' }}>
       <Paper
         component="form"
-        sx={{ display: 'flex', alignItems: 'center', width: 200, padding: 0.8, borderRadius: 20, backgroundColor: "rgba(34,34,34,0.8)", border: "1px solid #73747E" }}
+        sx={{ display: 'flex', alignItems: 'center', width: 200, padding: 0.8, borderRadius: 20, backgroundColor: "rgba(34,34,34,2)", border: "1px solid #73747E" }}
       >
         <InputBase
           sx={{ ml: 1, flex: 1, color: "white" }}
@@ -84,7 +84,7 @@ export default function SearchBar() {
       </Paper>
 
       {showResults && (
-       <div className="absolute top-16 left-0 w-full z-50 cursor-pointer max-h-60 overflow-y-auto rounded-md" style={{backgroundColor:"#222", opacity: 0.6}}>
+       <div className="absolute top-16 left-0 w-full z-50 cursor-pointer max-h-60 overflow-y-auto rounded-md" style={{backgroundColor:"#222", opacity:1}}>
        {searchedResults.length > 0 ? (
          <div className="w-full p-1.5">
            {searchedResults.map((item, index) => (

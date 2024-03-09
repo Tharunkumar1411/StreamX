@@ -43,7 +43,7 @@ export default function Recents() {
             component="img"
             sx={{ width: 261, height: 200 }}
             image={`https://storage.googleapis.com/gtv-videos-bucket/sample/${playerData?.thumb}`}
-            alt="Live from space album cover"
+            alt="Recent thumb"
           />
         </Card>
       </div>
