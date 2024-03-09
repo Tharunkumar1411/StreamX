@@ -2,13 +2,11 @@ import { combineReducers } from "@reduxjs/toolkit"
 
 const initialState = {
   favourites: [],
-  updatedFav: [],
   recentViewed: [],
   loading: true,
 }
 
 const moviewReducer = (state = initialState, action) => {
-  console.log("chekcinn payload::", action.payload)
   switch (action.type) {
     case "GET_MOVIES":
       return {...state, ...action.payload}
@@ -17,11 +15,11 @@ const moviewReducer = (state = initialState, action) => {
     case "SET_FAV": 
       return {...state, favourites: [...state.favourites, action.payload]}
     case "UPDATE_FAV": 
-      return {...state, favourites:  action.payload}
+      return {...state, favourites: action.payload}
     case "REMOVE_FAV": 
       return {
         ...state,
-        favourites: state.favourites.filter(item => item !== action.payload)
+        favourites: state.favourites.filter(item => item.title !== action.payload?.title)
       };
     case 'SET_RECENT': 
       return {...state, recentViewed: action.payload}
