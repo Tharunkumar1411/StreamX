@@ -12,7 +12,7 @@ export default function Player() {
         }
     },[location])
     return(
-        <div style={{width: "100%", height: "60vh", margin: "0 auto"}}>
+        <div className="w-full h-96 mx-auto">
            <VideoPlayer data={videoData} />
         </div>
     )

@@ -126,7 +126,7 @@ export default function VideoPlayer(props) {
     }
     const handleVolumeChange = (event) => {
         let newVolume = parseFloat(event.target.value);
-        newVolume = isNaN(newVolume) ? 1 : Math.max(0, Math.min(1, newVolume)); // Ensure volume is between 0 and 1
+        newVolume = isNaN(newVolume) ? 1 : Math.max(0, Math.min(1, newVolume));
         videoRef.current.volume = newVolume;
         setVolume(newVolume);
         setIsMuted(newVolume === 0);
@@ -135,8 +135,8 @@ export default function VideoPlayer(props) {
 
     const renderCustomControls = () => {
         return(
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div className="flex items-center justify-between">
+                <div className="flex items-center">
                     <IconButton onClick={playPause} sx={{ color: 'white' }}>
                         {isPlaying ? <PlayArrowIcon /> : <PauseIcon />}
                     </IconButton>
@@ -210,7 +210,7 @@ export default function VideoPlayer(props) {
     }
 
     return(
-        <div style={{ }} className="w-full h-full">
+        <div className="w-full h-full">
             <video
                 className="w-full h-full"
                 ref={videoRef}
@@ -221,7 +221,7 @@ export default function VideoPlayer(props) {
                 onPause={stopProgressLoop}
             />
 
-            { renderCustomControls()}
+            {renderCustomControls()}
 
 
             <div className={`flex flex-col gap-4 ${isMobile ? 'w-full' : 'w-3/2'} ml-4 mt-2`}>
@@ -236,10 +236,10 @@ export default function VideoPlayer(props) {
                     />
                 }
 
-                <div className="mt-4 flex flex-col gap-8 mb-2 text-white">
-                    <h1 style={{ fontFamily: "Cantarell" }}><span className="font-extrabold">Title:</span> {props?.data?.title}</h1>
-                    <h1 style={{ fontFamily: "Cantarell" }}><span className="font-extrabold">SubTitle:</span> {props?.data?.subtitle}</h1>
-                    <h1 style={{ fontFamily: "Cantarell" }}><span className="font-extrabold">About:</span> {props?.data?.description}</h1>
+                <div className="mt-4 flex flex-col gap-8 mb-2 text-white font-serif">
+                    <h1><span className="font-extrabold">Title:</span> {props?.data?.title}</h1>
+                    <h1><span className="font-extrabold">SubTitle:</span> {props?.data?.subtitle}</h1>
+                    <h1><span className="font-extrabold">About:</span> {props?.data?.description}</h1>
                 </div>
             </div>
         </div>

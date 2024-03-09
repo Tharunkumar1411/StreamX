@@ -37,7 +37,6 @@ export default function Favorites() {
     if(favourites.length){
         setFavData(favourites);
     }
-    console.log("checking data::", favourites)
    },[favourites])
 
     const handleRemoveFav = (data) => {
@@ -45,10 +44,8 @@ export default function Favorites() {
     }
 
     const swapIndexObjects = async(data, current, destination) => {
-        // Create a new array with the elements from the original array
         const newData = [...data];
     
-        // Swap elements in the new array
         [newData[current], newData[destination]] = [newData[destination], newData[current]];
     
         return newData;
@@ -56,17 +53,13 @@ export default function Favorites() {
     
     const handleDragEnd = async(result) => {
         if (!result.destination) return;
-        console.log("chekcing resut::", result);
+
         let destinationIndex = result?.destination?.index;
         let currentIndex = result?.source?.index;
         const fav = favourites
         const resultObj = await swapIndexObjects(fav, currentIndex, destinationIndex)
-        console.log("result object:", resultObj);
         dispatch(updateFavourites(resultObj))
         setFavData(resultObj)
-
-        // Reorder the list in Redux state
-        // Dispatch action to update the order in Redux state
     }
 
     return (
@@ -105,7 +98,7 @@ export default function Favorites() {
                                                     component="img"
                                                     height="194"
                                                     image={`https://storage.googleapis.com/gtv-videos-bucket/sample/${data?.thumb}`}
-                                                    alt="Paella dish"
+                                                    alt="fav image"
                                                     onClick={() => handleClick(data)}
                                                 />
                                             </Card>

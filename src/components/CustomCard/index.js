@@ -40,40 +40,41 @@ export default function CustomCard(props) {
     <div className='flex flex-row overflow-x-auto gap-2 cursor-pointer'>
     {(mapData?.map((data,i) => (
       <Card 
-      sx={{ maxWidth: 230, height: (props?.type === 'fav') ? 150 : 320, flexShrink: 0, display: 'flex', flexDirection: 'column', '&:hover': {
-        border: '1px solid #fff'
-      },  border: '1px solid #222' }} key={i} style={{backgroundColor: 'rgba(34,34,34,0.8'}}>
+        sx={{ maxWidth: 230, height: (props?.type === 'fav') ? 150 : 320, flexShrink: 0, display: 'flex', flexDirection: 'column', '&:hover': {
+          border: '1px solid #fff'
+        },  border: '1px solid #222' }} 
+        key={i} 
+        style={{backgroundColor: 'rgba(34,34,34,0.8'}}>
         <CardMedia
           component="img"
-          alt="green iguana"
+          alt="custom thumb"
           sx={{ width: 361, height: 'fit-content' }}
           image={`https://storage.googleapis.com/gtv-videos-bucket/sample/${data?.thumb}`}
           onClick={() => handleClick(data)}
         />
         {props?.type !== 'fav' &&
-        <>
-          <CustomButton 
-            extraStyle={{ 
-              backgroundColor: "#fff",
-              color: "#000",
-              opacity: "0.8",
-              fontWeight: "bold",
-              "&:hover": {
-                  backgroundColor: "#fff",
-            }}} 
-            name={!isFavourites(data) ? `Add To Fav` : `In Fav`} 
-            func={() => !isFavourites(data) ? dispatch(setFavourites(data)) : navigate('/favourites')}
-          />
-         <CardContent >
-          <Typography gutterBottom component="div" className='text-white' >
-            {data?.title}
-          </Typography>
-          <Typography component="div" style={{color:"grey"}}>
-            {data.subtitle}
-          </Typography>
-        </CardContent>
-
-        </>
+          <>
+            <CustomButton 
+              extraStyle={{ 
+                backgroundColor: "#fff",
+                color: "#000",
+                opacity: "0.8",
+                fontWeight: "bold",
+                "&:hover": {
+                    backgroundColor: "#fff",
+              }}} 
+              name={!isFavourites(data) ? `Add To Fav` : `In Fav`} 
+              func={() => !isFavourites(data) ? dispatch(setFavourites(data)) : navigate('/favourites')}
+            />
+            <CardContent >
+              <Typography gutterBottom component="div" className='text-white' >
+                {data?.title}
+              </Typography>
+              <Typography component="div" style={{color:"grey"}}>
+                {data.subtitle}
+              </Typography>
+            </CardContent>
+          </>
         }
       </Card>
     )))}
